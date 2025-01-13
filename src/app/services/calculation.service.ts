@@ -26,4 +26,7 @@ export class CalculationService {
     return this.http.post<Calculation>(this.endPointUrl, calculation);
   }
 
+  deleteCalculation(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.endPointUrl}/${id}`);
+  }
 }

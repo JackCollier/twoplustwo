@@ -31,12 +31,16 @@
         <th>Number 2</th>
         <th>Result</th>
         <th>Timestamp</th>
+        <th>Actions</th>
       </tr>
-      <tr *ngFor="let calc of calculations; let i = index">
+      <tr *ngFor="let calc of calculations">
         <td>{{ calc.number1 }}</td>
         <td>{{ calc.number2 }}</td>
         <td>{{ calc.result }}</td>
         <td>{{ calc.timestamp | date: 'short' }}</td>
+        <td>
+          <button (click)="deleteCalculation(calc.id!)">Delete</button>
+        </td>
       </tr>
     </table>
   </div>

@@ -66,6 +66,15 @@ export class AppComponent implements OnInit {
     this.errorMessage = message;
   }
 
+  deleteCalculation(id: number): void {
+    this.calculationService.deleteCalculation(id).subscribe({
+      next: () => this.getCalculations(),
+      error: () => {
+        this.errorMessage = 'Error deleting calculation.';
+      },
+    });
+  }
+
   calculateSum(): void {
     this.errorMessage = '';
     this.performCalculation();
