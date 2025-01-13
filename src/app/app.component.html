@@ -1,4 +1,5 @@
 <div>
+    <p *ngIf="errorMessage">{{errorMessage}}</p>
     <h2>Add Two Numbers</h2>
     <form (ngSubmit)="calculateSum()">
       <label for="number1">Number 1:</label>
