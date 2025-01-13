@@ -22,4 +22,22 @@
     </form>
     <h3 *ngIf="sum !== null">Result: {{ sum }}</h3>
   </div>
+
+  <div>
+    <h3>Calculation History</h3>
+    <table *ngIf="calculations.length" border="1">
+      <tr>
+        <th>Number 1</th>
+        <th>Number 2</th>
+        <th>Result</th>
+        <th>Timestamp</th>
+      </tr>
+      <tr *ngFor="let calc of calculations; let i = index">
+        <td>{{ calc.number1 }}</td>
+        <td>{{ calc.number2 }}</td>
+        <td>{{ calc.result }}</td>
+        <td>{{ calc.timestamp | date: 'short' }}</td>
+      </tr>
+    </table>
+  </div>
   

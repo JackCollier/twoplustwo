@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Calculation, CalculationService } from './services/calculation.service';
 
@@ -9,19 +9,31 @@ import { Calculation, CalculationService } from './services/calculation.service'
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   number1: number | null = null;
   number2: number | null = null;
   sum: number | null = null;
   errorMessage: string = '';
+  calculations: Calculation[] = [];
 
   constructor(private calculationService: CalculationService) {}
+
+  ngOnInit(): void {
+    this.getCalculations();
+  }
+
+  private getCalculations(): void {
+    this.calculationService.getCalculations().subscribe({
+      next: (data) => (this.calculations = data),
+      error: () => this.setError('Error fetching calculation history.'),
+    });
+  }
 
   private performCalculation(): void {
     if (this.number1 !== null && this.number2 !== null) {
       this.sum = this.number1 + this.number2;
     } else {
-      this.errorMessage = 'Please enter valid numbers.';
+      this.setError('Please enter valid numbers.');
     }
   }
 
@@ -35,15 +47,27 @@ export class AppComponent {
       };
 
       this.calculationService.addCalculation(calculation).subscribe({
-        error: (err) => {
-          this.errorMessage = 'Error saving calculation.';
+        next: () => {
+          this.resetState();
+          this.getCalculations();
         },
+        error: () => this.setError('Error saving calculation.'),
       });
     }
   }
 
+  private resetState(): void {
+    this.number1 = null;
+    this.number2 = null;
+    this.sum = null;
+  }
+
+  private setError(message: string): void {
+    this.errorMessage = message;
+  }
+
   calculateSum(): void {
-    this.errorMessage = ''; 
+    this.errorMessage = '';
     this.performCalculation();
     if (this.sum !== null) {
       this.saveCalculation();
